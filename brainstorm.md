@@ -9,8 +9,21 @@ of my top spending categories.
 
 - Menu
   - Add expense
+    - Store in DataBase
+    - Add to total expenses
+    - Subtract from Balance
+  - Add income
+
+  - Create a Database for Expenses
+    - ER diagram
+    
+
+
   - View Expense breakdown
-  - Cash Flow
+  - Cash Flow (per month)
+
+
+- Create Database for expenses
 
 
 - Spending categories
