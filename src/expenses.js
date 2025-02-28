@@ -15,3 +15,7 @@ export function addExpense(amount, category){
 
   return {amount, category};
 }
+
+export function viewExpenses(){
+  
+}

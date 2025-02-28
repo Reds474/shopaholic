@@ -1,8 +1,11 @@
 import express, { json} from 'express';
 import { addExpense } from './expenses.js'
 import { BadRequestError, UnauthorisedError, ForbiddenError } from './errors.js';
+import {pool} from './db.js'
 
 const app = express();
+//const pool = require('./db');
+const port = 3000;
 
 app.use(express.json());
 
@@ -53,6 +56,6 @@ app.get('/expenses', (req,res) =>{
 // which can be assessed in the application using the req. body object.
 //app.use(express.json());
 
-app.listen(3000)
+app.listen(port);
 
 

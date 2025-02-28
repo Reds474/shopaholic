@@ -10,6 +10,8 @@ cashFlow();
 // Frontend will get us the amount, rating and category
 
 
+
+
 function viewExpenseBreakdown(){
   //
   return 0;
