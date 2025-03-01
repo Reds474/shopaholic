@@ -6,6 +6,8 @@ I can keep myself accountable and track what I am spending on.
 When I add all my expenses to the program => it gives me a breakdown 
 of my top spending categories.
 
+I can also keep track of my cash flow by adding in income and credits.
+
 
 - Menu
   - Add expense
@@ -13,20 +15,10 @@ of my top spending categories.
     - Add to total expenses
     - Subtract from Balance
   - Add income
+  - View Expenses
+  - View Cashflow
 
   - Create a Database for Expenses
+    - Connect database to this project
     - ER diagram
     
-
-
-  - View Expense breakdown
-  - Cash Flow (per month)
-
-
-- Create Database for expenses
-
-
-- Spending categories
-- Net cash flow per week
-- Net cash flow per month
-- Encouragement and analysis
