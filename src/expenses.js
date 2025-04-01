@@ -1,6 +1,8 @@
 import { BadRequestError,UnauthorisedError,ForbiddenError } from "./errors.js";
 import { dataStore } from "./dataStore.js";
 
+import pool from "./db.js";
+
 export function addExpense(amount, category){
   // Store amount and category in persistent dataStore  
   // Validate the input
@@ -12,6 +14,9 @@ export function addExpense(amount, category){
     throw new BadRequestError('Invalid Category Type');
   }
   dataStore.expenses.push({amount,category});
+
+
+  
 
   return {amount, category};
 }

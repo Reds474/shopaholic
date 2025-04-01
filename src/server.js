@@ -2,12 +2,14 @@ import express, { json} from 'express';
 import { addExpense } from './expenses.js'
 import { BadRequestError, UnauthorisedError, ForbiddenError } from './errors.js';
 import {pool} from './db.js'
+import cors from "cors";
 
 const app = express();
 //const pool = require('./db');
 const port = 3000;
 
 app.use(express.json());
+app.use(cors());
 
 function handleError(res, error) {
   if (error instanceof BadRequestError) {
@@ -22,8 +24,25 @@ function handleError(res, error) {
   return res.status(500).json({ error: 'Internal Server Error' });
 }
 
-app.get('/', (req,res) => {
-  res.send('Hello')
+// Retrieving the database name
+app.get('/', async(req,res) => {
+  const result = await pool.query("select current_database()");
+  res.send(`The database name is ${result.rows[0].current_database}`);
+})
+
+// Retrieving transactions
+// Next step is to put it into a func
+app.get('/transactions', async(req,res) =>{
+  try {
+    const result = await pool.query("SELECT * FROM transactions");
+    res.json({
+      message: "Transactions: ",
+      data: result.rows,
+    });
+
+  } catch (error) {
+      handleError(res,error);
+  }
 })
 
 
@@ -37,10 +56,10 @@ app.post('/expenses', (req, res) => {
     // Return the result as the response
     res.status(200).json(result);
     console.log('RESULT',result)
+
+
   } catch (error) {
-    // console.error('Error in /expenses route:', error);
-    // res.status(500).json({ error: 'Internal Server Error' });
-    //console.log('ERROR',error.message)
+
     handleError(res,error);  
   } 
 });
