@@ -30,28 +30,37 @@ app.get('/', async(req,res) => {
   res.send(`The database name is ${result.rows[0].current_database}`);
 })
 
-// Retrieving transactions
+// Retrieving transactions 
 // Next step is to put it into a func
-app.get('/transactions', async(req,res) =>{
+app.get('/view/transactions', async(req,res) =>{
   try {
     const result = await pool.query("SELECT * FROM transactions");
     res.json({
-      message: "Transactions: ",
+      table: "Transactions:",
       data: result.rows,
     });
+    console.log(result.rows)
 
   } catch (error) {
       handleError(res,error);
   }
 })
 
+// Next view routes to be made
+
+// /view/categories
+// /view/mostexpensive/transaction
+// /view/mostexpensive/category
+// /view/mostexpensive/ranked
+// /view/mostfrequent/category
+
+ 
 
 app.post('/expenses', (req, res) => {
   try {
-    console.log('req',req.body);
-    const {expense, category } = req.body; // Extract `expense` from the request body - same variable name as the requestHelper for addExpense
+    const {amount, category } = req.body; // Extract `expense` from the request body - same variable name as the requestHelper for addExpense
     // Call the addExpense function
-    const result = addExpense(expense, category);
+    const result = addExpense(amount, category);
 
     // Return the result as the response
     res.status(200).json(result);
