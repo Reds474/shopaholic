@@ -30,8 +30,12 @@ app.get('/', async(req,res) => {
   res.send(`The database name is ${result.rows[0].current_database}`);
 })
 
-// Retrieving transactions 
-// Next step is to put it into a func
+
+
+// View Funcs
+// View interesting information about transactions
+
+// View all past transactions
 app.get('/view/transactions', async(req,res) =>{
   try {
     const result = await pool.query("SELECT * FROM transactions");
@@ -46,15 +50,87 @@ app.get('/view/transactions', async(req,res) =>{
   }
 })
 
-// Next view routes to be made
+// View unique categories
+app.get('/view/categories', async(req,res) =>{
+  try {
+    const result = await pool.query("select distinct category from transactions");
+    res.json({
+      categories: result.rows,
+    });
 
-// /view/categories
-// /view/mostexpensive/transaction
-// /view/mostexpensive/category
+  }catch(error){
+    handleError(res,error);
+  }
+})
+
+// View the most expensive transaction
+app.get('/view/mostexpensive/transaction',async(req,res)=>{
+  try {
+    const result = await pool.query(`
+      select * 
+      from transactions 
+      where amount=(select max(amount) 
+                    from transactions)`
+      )
+
+    res.json({
+      MostExpensiveTransactions: result.rows,
+    })
+  } catch (error) {
+    handleError(res,error);
+  }
+})
+
+// /view/mostfrequent/category
+app.get('/view/mostfrequent/category', async(req,res)=>{
+  try {
+    // Create a view with a Table with categories and number of transactions
+    await pool.query(`
+      create or replace view categories as
+      select category, count(*) as "transactions"
+      from transactions
+      group by category
+      order by count(*) desc;`
+    );
+
+    // Selecting the view
+    await pool.query(`
+      select * 
+      from categories;`
+    );
+
+    // Selecting the most frequent category from the view
+    const result = await pool.query(`
+      select category 
+      from categories 
+      where transactions=(select max(transactions) 
+                          from categories);`);
+
+    // Select the max from the view
+    res.json({MostFrequentCategory: result.rows})
+    
+  } catch (error) {
+    handleError(res,error)
+  }
+})
+
+
+
+
+
+// Next view routes to be made
 // /view/mostexpensive/ranked
 // /view/mostfrequent/category
 
- 
+// Insert data into the database ie. Add expenses
+
+// Function to delete a specific transaction from the database (trigger??)
+
+
+
+
+
+  
 
 app.post('/expenses', (req, res) => {
   try {
@@ -65,8 +141,6 @@ app.post('/expenses', (req, res) => {
     // Return the result as the response
     res.status(200).json(result);
     console.log('RESULT',result)
-
-
   } catch (error) {
 
     handleError(res,error);  
