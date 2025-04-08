@@ -43,7 +43,6 @@ app.get('/view/transactions', async(req,res) =>{
       table: "Transactions:",
       data: result.rows,
     });
-    console.log(result.rows)
 
   } catch (error) {
       handleError(res,error);
@@ -114,13 +113,44 @@ app.get('/view/mostfrequent/category', async(req,res)=>{
   }
 })
 
+app.get('/view/mostexpensive/category/list', async(req,res)=>{
+  try {
+    const result = await pool.query("SELECT * FROM transactions");
+    const table = result.rows;
+
+    //let usedCategories = [];
 
 
+    console.log(table);
+
+    let amount = 0;
+  
+    for(const row in table){      
+      if(table[row].category === 'Food'){
+        amount = amount + parseFloat(table[row].amount);
+        console.log(`Food amount current: $${amount}`)
+      }
+      
+    }
+
+    console.log(`Total amount spent on Food is: $${amount}`);
+
+
+    res.json({
+      table: "Transactions:",
+      data: result.rows,
+    });
+    
+  } catch (error) {
+    handleError(error);
+  }
+})
 
 
 // Next view routes to be made
-// /view/mostexpensive/ranked
-// /view/mostfrequent/category
+// /view/mostexpensive/list
+
+
 
 // Insert data into the database ie. Add expenses
 
@@ -130,7 +160,6 @@ app.get('/view/mostfrequent/category', async(req,res)=>{
 
 
 
-  
 
 app.post('/expenses', (req, res) => {
   try {
