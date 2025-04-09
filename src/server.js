@@ -113,28 +113,33 @@ app.get('/view/mostfrequent/category', async(req,res)=>{
   }
 })
 
-app.get('/view/mostexpensive/category/list', async(req,res)=>{
+app.get('/view/mostexpensive/list', async(req,res)=>{
   try {
     const result = await pool.query("SELECT * FROM transactions");
     const table = result.rows;
 
-    //let usedCategories = [];
-
-
-    console.log(table);
-
+    let usedCategories = [];
     let amount = 0;
+    let categoryList =[];
   
     for(const row in table){      
       if(table[row].category === 'Food'){
         amount = amount + parseFloat(table[row].amount);
         console.log(`Food amount current: $${amount}`)
       }
-      
     }
 
-    console.log(`Total amount spent on Food is: $${amount}`);
-
+    
+    // Do this in postgres to give a table ordered by largest to smallest
+    for(const row in table){
+      
+      if(usedCategories.includes(table[row].category) ===false){
+        let resultSum = await pool.query(`select categoryCost('${table[row].category}')`);
+        categoryList.push({category: `${table[row].category}`, amount: resultSum.rows[0].categorycost})
+        usedCategories.push(table[row].category);
+      }
+    }
+    console.log(categoryList);
 
     res.json({
       table: "Transactions:",
