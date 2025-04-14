@@ -128,9 +128,19 @@ app.get('/view/category/expense/list', async(req,res)=>{
   }
 })
 
+// app.post('/add/expense', async(req,res)=>{
+//   try{
+//     const result = await pool.query("")
+//   }
+//   catch(error){
+
+//   }
+// })
+
 
 // Next view routes to be made
 // Insert data into the database ie. Add expenses
+
 // Function to delete a specific transaction from the database (trigger??)
 
 
