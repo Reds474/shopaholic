@@ -130,12 +130,7 @@ app.get('/view/category/expense/list', async(req,res)=>{
 
 
 // Next view routes to be made
-// /view/mostexpensive/list
-
-
-
 // Insert data into the database ie. Add expenses
-
 // Function to delete a specific transaction from the database (trigger??)
 
 
