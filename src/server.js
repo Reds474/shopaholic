@@ -124,24 +124,30 @@ app.get('/view/category/expense/list', async(req,res)=>{
     });
     
   } catch (error) {
-    handleError(error);
+    handleError(res, error);
   }
 })
 
-// app.post('/add/expense', async(req,res)=>{
-//   try{
-//     const result = await pool.query("")
-//   }
-//   catch(error){
+app.post('/add/expense', async(req,res)=>{
+  try{
+    
+    const{amount, category} = req.body;
+    if (!amount || !category) {
+      return res.status(400).send('Missing amount or category');
+    }
+    console.log(`Amount: ${amount}, Category ${category}`)
+    await pool.query("insert into Transactions(amount,category) values($1,$2)",[amount,category])
+    
+    res.send(`Expense Successfully Added to the Database`);
+  }
+  catch(error){
+    handleError(res, error);
+  }
+})
 
-//   }
-// })
 
 
-// Next view routes to be made
-// Insert data into the database ie. Add expenses
-
-// Function to delete a specific transaction from the database (trigger??)
+// Function to delete transactions
 
 
 

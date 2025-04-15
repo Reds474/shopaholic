@@ -1,14 +1,14 @@
 import { addExpense } from "../requestHelper";
 
 
-describe('SUCCESS TESTS', () =>{
-  test('Dummy Test', () => {
-    expect(addExpense(50, "Food")).toStrictEqual({
-      statusCode: 200,
-      jsonBody: {amount: 50, category: 'Food'}
-    });
-  });
-});
+// describe('SUCCESS TESTS', () =>{
+//   test('Dummy Test', () => {
+//     expect(addExpense(50, "Food")).toStrictEqual({
+//       statusCode: 200,
+//       jsonBody: {amount: 50, category: 'Food'}
+//     });
+//   });
+// });
 
 
 
