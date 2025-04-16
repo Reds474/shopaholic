@@ -146,6 +146,19 @@ app.post('/add/expense', async(req,res)=>{
 })
 
 
+app.delete('/delete/expense/:transactionid', async(req,res) =>{
+  
+  console.log(token);
+
+  const transactionId = parseInt(req.params.transactionid)
+
+  // Error Checking 
+  await pool.query('delete from transactions where transaction_id=$1',[transactionId]);
+  
+  res.send(`Transaction ${transactionId} successfully deleted!`);
+})
+
+
 
 // Function to delete transactions
 
