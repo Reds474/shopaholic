@@ -1,6 +1,4 @@
 import { BadRequestError,UnauthorisedError,ForbiddenError } from "./errors.js";
-import { dataStore } from "./dataStore.js";
-
 import pool from "./db.js";
 
 export function addExpense(amount, category){
@@ -21,6 +19,6 @@ export function addExpense(amount, category){
   return {amount, category};
 }
 
-export function viewExpenses(){
-  
+export async function viewExpenses(){
+  await pool.query("select * FROM transactions")
 }

@@ -38,7 +38,7 @@ app.get('/', async(req,res) => {
 // View all past transactions
 app.get('/view/transactions', async(req,res) =>{
   try {
-    const result = await pool.query("SELECT * FROM transactions");
+    const result = await pool.query("select * FROM transactions");
     res.json({
       table: "Transactions:",
       data: result.rows,
@@ -130,7 +130,6 @@ app.get('/view/category/expense/list', async(req,res)=>{
 
 app.post('/add/expense', async(req,res)=>{
   try{
-    
     const{amount, category} = req.body;
     if (!amount || !category) {
       return res.status(400).send('Missing amount or category');
@@ -148,19 +147,44 @@ app.post('/add/expense', async(req,res)=>{
 
 app.delete('/delete/expense/:transactionid', async(req,res) =>{
   
-  console.log(token);
+  try{
+    const transactionId = parseInt(req.params.transactionid)
 
-  const transactionId = parseInt(req.params.transactionid)
+    if(!transactionId){
+      console.log('asdas')
+      throw new BadRequestError('transactionId is not a number');
+    }
+    // Error when the transaction_id is not in the database
 
-  // Error Checking 
-  await pool.query('delete from transactions where transaction_id=$1',[transactionId]);
+    const result = await pool.query("SELECT * FROM transactions where transaction_id=$1",[transactionId]);
+
+    if(result.rows.length === 0){
+      throw new BadRequestError('transaction_id does not exist');
+    }
+
+    
+
+    await pool.query('delete from transactions where transaction_id=$1',[transactionId]);
+    res.send(`Transaction ${transactionId} successfully deleted!`);
+  }
+  catch(error){
+    handleError(res,error)
+  }
   
-  res.send(`Transaction ${transactionId} successfully deleted!`);
 })
 
 
 
-// Function to delete transactions
+// Function to update transactions
+
+// app.put('/update/expense', async(req,res) =>{
+//   try{
+//     const{expense} = req.body;
+//     await pool.query();
+//   }catch(error){
+//     handleError(error)
+//   }
+// })
 
 
 
